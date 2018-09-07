@@ -1,24 +1,24 @@
 'use strict';
 import * as vscode from 'vscode';
 import { 
-    ProgressWatcher, 
-    WebpackProgress 
+  ProgressWatcher, 
+  WebpackProgress 
 } from "./webpack";
 
 export function activate(context: vscode.ExtensionContext) {
 
-    console.log('Congratulations, your extension "webpack-progress" is now active!');
+  console.log('Congratulations, your extension "webpack-progress" is now active!');
 
-    let progress = new WebpackProgress();
-    let watcher = new ProgressWatcher();
-    
-    watcher.initializeWacher();
-    watcher.on("progressChange", (percentage) => {
-        progress.updateProgress(percentage);
-    });
-    
-    context.subscriptions.push(progress);
-    context.subscriptions.push(progress);
+  let progress = new WebpackProgress();
+  let watcher = new ProgressWatcher();
+  
+  watcher.initializeWacher();
+  watcher.on("progressChange", (percentage) => {
+    progress.updateProgress(percentage);
+  });
+  
+  context.subscriptions.push(progress);
+  context.subscriptions.push(progress);
 }
 
 export function deactivate() {
