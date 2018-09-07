@@ -1,6 +1,6 @@
-'use strict';
 import * as vscode from 'vscode';
-import { ProgressWatcher, WebpackProgress } from './webpack';
+import { WebpackProgress } from './webpack-progress';
+import { ProgressWatcher } from './progress-watcher';
 
 export function activate(context: vscode.ExtensionContext) {
   console.log('Congratulations, your extension "webpack-progress" is now active!');
