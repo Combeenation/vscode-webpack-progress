@@ -4,7 +4,9 @@ import * as vscode from 'vscode';
 export class WebpackProgress {
   private _statusBarItem: vscode.StatusBarItem;
   private _statusTextBase = '';
-
+  
+  private _lastUpdateTime: number;
+  private _timerId: NodeJS.Timer;
   
   public updateProgress(percentage: number, state: ProgressState) {
     if (!this._statusBarItem) {
@@ -20,21 +22,40 @@ export class WebpackProgress {
         case ProgressState.Success: statusText += ' ✔️'; break;
         case ProgressState.Warning: statusText += ' ⚠️️'; break;
         case ProgressState.Error:   statusText += ' ❌'; break;
-    }
+      }
     }
     
     this._statusBarItem.text = this._statusTextBase = statusText;
-    }
-    this._lastPercentage = percentage;
+    this._lastUpdateTime = Date.now();
+    this._updateTimer();
   }
 
   public dispose() {
     this._statusBarItem.dispose();
+    if (this._timerId) {
+      clearTimeout(this._timerId);
+    }
   }
-
-  private _resetProgress() {
-    this._statusBarItem.text = `${this._statusLabel} ✓`;
-    clearTimeout(this._resetTimout);
-    this._resetTimout = setTimeout(() => this._statusBarItem.text = this._statusLabel, 5000);
+  
+  private _updateTimer() {
+    const secondsPassed = (Date.now() - this._lastUpdateTime) / 1000;
+    let timePassedStr = '';
+    
+    if (secondsPassed < 10) {
+      timePassedStr = '< 10s';
+    } else if (secondsPassed < 20) {
+      timePassedStr = '< 20s';
+    } else if (secondsPassed < 30) {
+      timePassedStr = '< 30s';
+    }
+    
+    this._statusBarItem.text = this._statusTextBase + ` ${ timePassedStr }`;
+    
+    if (this._timerId) {
+      clearTimeout(this._timerId);
+    }
+    if (secondsPassed <= 30) {
+      this._timerId = setTimeout(this._updateTimer.bind(this), 10000);
+    }
   }
 }
