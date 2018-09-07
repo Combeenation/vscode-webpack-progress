@@ -1,5 +1,7 @@
 # ToDo
 
-## Minor
+## Major
 
-* Remove warnings from `.vscode/launch.json` & `.vscode/tasks.json`
+## Normal
+
+## Minor
