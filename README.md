@@ -2,7 +2,7 @@
 
 Display Webpack build progress in VS Code Status Bar.
 
-![](https://github.com/wk-j/vscode-webpack-progress/raw/master/images/progress.png)
+![](https://github.com/Combeenation/vscode-webpack-progress/raw/master/images/progress.png)
 
 ## Installation
 
@@ -12,15 +12,13 @@ Display Webpack build progress in VS Code Status Bar.
 
 ## webpack.config.js
 
-You have to install [bitbar-webpack-progress-plugin](https://github.com/wk-j/bitbar-webpack-progress-plugin)
+You have to install [webpack-progress-plugin](https://github.com/Combeenation/webpack-progress-plugin)
 
 ```javascript
-var BitBarWebpackProgressPlugin = require("bitbar-webpack-progress-plugin");
+var WebpackProgressPlugin = require("webpack-progress-plugin");
 
 module.exports = {
   ...
-  plugins: [
-      new BitBarWebpackProgressPlugin()
-  ]
+  plugins: [ new WebpackProgressPlugin() ]
 };
 ```
