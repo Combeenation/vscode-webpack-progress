@@ -23,5 +23,11 @@
       "node_modules": true,
       "out": true, // set this to true to hide the "out" folder with the compiled JS files
     },
-  }
+  },
+  "extensions": {
+    "recommendations": [
+      "EditorConfig.EditorConfig",
+      "eg2.tslint"
+    ]
+  },
 }
