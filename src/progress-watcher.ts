@@ -2,6 +2,12 @@ import * as fs from 'fs';
 import { EventEmitter } from 'events';
 import * as os from 'os';
 
+export enum ProgressState {
+  Success = 0,
+  Warning,
+  Error,
+}
+
 export class ProgressWatcher extends EventEmitter {
   private _timer: NodeJS.Timer;
   

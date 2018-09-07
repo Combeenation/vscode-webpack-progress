@@ -1,29 +1,29 @@
+import { ProgressState } from './progress-watcher';
 import * as vscode from 'vscode';
 
 export class WebpackProgress {
   private _statusBarItem: vscode.StatusBarItem;
-  private _lastPercentage: number;
-  private _resetTimout: any;
-  private _statusLabel: string = 'Webpack';
+  private _statusTextBase = '';
 
-  public updateProgress(percentage) {
+  
+  public updateProgress(percentage: number, state: ProgressState) {
     if (!this._statusBarItem) {
        this._statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right);
-       this._statusBarItem.text = this._statusLabel;
        this._statusBarItem.show();
     }
-    if (typeof this._lastPercentage === 'undefined') {
-      this._statusBarItem.text = this._statusLabel;
+    
+    let statusText = 'Webpack';
+    if (percentage < 100) {
+      statusText += ` ${percentage}% ⌛️`;
     } else {
-      this._statusBarItem.text = (
-        (typeof percentage === 'number')
-        ? `${this._statusLabel} ${percentage}%`
-        : this._statusLabel
-      );
+      switch (state) {
+        case ProgressState.Success: statusText += ' ✔️'; break;
+        case ProgressState.Warning: statusText += ' ⚠️️'; break;
+        case ProgressState.Error:   statusText += ' ❌'; break;
+    }
     }
     
-    if ((percentage === 100) && (typeof this._lastPercentage !== 'undefined')) {
-      this._resetProgress();
+    this._statusBarItem.text = this._statusTextBase = statusText;
     }
     this._lastPercentage = percentage;
   }
