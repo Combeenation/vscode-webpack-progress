@@ -3,12 +3,12 @@ import { EventEmitter } from 'events';
 import * as os from 'os';
 
 export class ProgressWatcher extends EventEmitter {
-  private timer: NodeJS.Timer;
+  private _timer: NodeJS.Timer;
   
   public initializeWacher() {
     const tempFile = `${os.tmpdir()}/webpack-progress`;
     let lastModify = new Date(200, 10, 10);
-    this.timer = setInterval(() => {
+    this._timer = setInterval(() => {
       fs.stat(tempFile, (err, state) => {
         if (!err && state.mtime > lastModify) {
           const content = fs.readFileSync(tempFile).toString();
@@ -21,6 +21,6 @@ export class ProgressWatcher extends EventEmitter {
   }
 
   public dispose() {
-    clearInterval(this.timer);
+    clearInterval(this._timer);
   }
 }

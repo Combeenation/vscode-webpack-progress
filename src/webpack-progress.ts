@@ -1,40 +1,40 @@
 import * as vscode from 'vscode';
 
 export class WebpackProgress {
-  private statusBarItem: vscode.StatusBarItem;
-  private lastPercentage: number;
-  private resetTimout: any;
-  private statusLabel: string = 'Webpack';
+  private _statusBarItem: vscode.StatusBarItem;
+  private _lastPercentage: number;
+  private _resetTimout: any;
+  private _statusLabel: string = 'Webpack';
 
   public updateProgress(percentage) {
-    if (!this.statusBarItem) {
-       this.statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right);
-       this.statusBarItem.text = this.statusLabel;
-       this.statusBarItem.show();
+    if (!this._statusBarItem) {
+       this._statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right);
+       this._statusBarItem.text = this._statusLabel;
+       this._statusBarItem.show();
     }
-    if (typeof this.lastPercentage === 'undefined') {
-      this.statusBarItem.text = this.statusLabel;
+    if (typeof this._lastPercentage === 'undefined') {
+      this._statusBarItem.text = this._statusLabel;
     } else {
-      this.statusBarItem.text = (
+      this._statusBarItem.text = (
         (typeof percentage === 'number')
-        ? `${this.statusLabel} ${percentage}%`
-        : this.statusLabel
+        ? `${this._statusLabel} ${percentage}%`
+        : this._statusLabel
       );
     }
     
-    if ((percentage === 100) && (typeof this.lastPercentage !== 'undefined')) {
-      this.resetProgress();
+    if ((percentage === 100) && (typeof this._lastPercentage !== 'undefined')) {
+      this._resetProgress();
     }
-    this.lastPercentage = percentage;
+    this._lastPercentage = percentage;
   }
 
   public dispose() {
-    this.statusBarItem.dispose();
+    this._statusBarItem.dispose();
   }
 
-  private resetProgress() {
-    this.statusBarItem.text = `${this.statusLabel} ✓`;
-    clearTimeout(this.resetTimout);
-    this.resetTimout = setTimeout(() => this.statusBarItem.text = this.statusLabel, 5000);
+  private _resetProgress() {
+    this._statusBarItem.text = `${this._statusLabel} ✓`;
+    clearTimeout(this._resetTimout);
+    this._resetTimout = setTimeout(() => this._statusBarItem.text = this._statusLabel, 5000);
   }
 }
