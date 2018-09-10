@@ -1,6 +1,13 @@
 import { ProgressState } from './progress-watcher';
 import * as vscode from 'vscode';
 
+const STATE_ICONS = {
+  [ ProgressState.Running ]: '⏳',
+  [ ProgressState.Success ]: '✔️',
+  [ ProgressState.Warning ]: '⚠️️',
+  [ ProgressState.Error ]:   '❌',
+};
+
 export class WebpackProgress {
   private _statusBarItem: vscode.StatusBarItem;
   private _statusTextBase = '';
@@ -14,15 +21,8 @@ export class WebpackProgress {
        this._statusBarItem.show();
     }
     
-    let statusText = 'Webpack';
-    switch (state) {
-      case ProgressState.Running: statusText += '️ ⏳'; break;
-      case ProgressState.Success: statusText += ' ✔️'; break;
-      case ProgressState.Warning: statusText += ' ⚠️️'; break;
-      case ProgressState.Error:   statusText += ' ❌'; break;
-    }
-    
-    this._statusBarItem.text = this._statusTextBase = statusText;
+    this._statusBarItem.text = this._statusTextBase = `Webpack ${ STATE_ICONS[state] }`;
+    this._statusBarItem.color = (state === ProgressState.Error) ? '#f03a17' : '';
     this._lastUpdateTime = Date.now();
     this._updateTimer();
   }
