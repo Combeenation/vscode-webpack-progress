@@ -3,7 +3,8 @@ import { EventEmitter } from 'events';
 import * as os from 'os';
 
 export enum ProgressState {
-  Success = 0,
+  Running = 0,
+  Success,
   Warning,
   Error,
 }
@@ -17,9 +18,22 @@ export class ProgressWatcher extends EventEmitter {
     this._timer = setInterval(() => {
       fs.stat(tempFile, (err, state) => {
         if (!err && state.mtime > lastModify) {
-          const content = fs.readFileSync(tempFile).toString();
-          const percentage = parseInt(content, 10);
-          this.emit('progressChange', percentage);
+          const lines = fs.readFileSync(tempFile).toString().toLowerCase().split(os.EOL);
+          const isRunning   = (lines[0] === 'true');
+          const hasErrors   = (lines[1] === 'true');
+          const hasWarnings = (lines[2] === 'true');
+          
+          const progressState = (
+            isRunning
+              ? ProgressState.Running
+              : hasErrors
+                ? ProgressState.Error
+                : hasWarnings
+                  ? ProgressState.Warning
+                  : ProgressState.Success
+          );
+          
+          this.emit('progressChange', progressState);
           lastModify = state.mtime;
         }
       });

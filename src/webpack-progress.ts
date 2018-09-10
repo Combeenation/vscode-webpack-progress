@@ -8,21 +8,18 @@ export class WebpackProgress {
   private _lastUpdateTime: number;
   private _timerId: NodeJS.Timer;
   
-  public updateProgress(percentage: number, state: ProgressState) {
+  public updateProgress(state: ProgressState) {
     if (!this._statusBarItem) {
        this._statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right);
        this._statusBarItem.show();
     }
     
     let statusText = 'Webpack';
-    if (percentage < 100) {
-      statusText += ` ${percentage}% ⌛️`;
-    } else {
-      switch (state) {
-        case ProgressState.Success: statusText += ' ✔️'; break;
-        case ProgressState.Warning: statusText += ' ⚠️️'; break;
-        case ProgressState.Error:   statusText += ' ❌'; break;
-      }
+    switch (state) {
+      case ProgressState.Running: statusText += '️ ⏳'; break;
+      case ProgressState.Success: statusText += ' ✔️'; break;
+      case ProgressState.Warning: statusText += ' ⚠️️'; break;
+      case ProgressState.Error:   statusText += ' ❌'; break;
     }
     
     this._statusBarItem.text = this._statusTextBase = statusText;

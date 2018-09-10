@@ -18,7 +18,8 @@
     "curly": [ true, "ignore-same-line" ],
     "no-trailing-whitespace": [ true, "ignore-comments", "ignore-blank-lines", "ignore-template-strings" ],
     "max-len": [ "warn", 120 ],
-    "ordered-imports": false
+    "ordered-imports": false,
+    "arrow-parens": [ true, "ban-single-arg-parens" ]
   },
   "rulesDirectory": []
 }
