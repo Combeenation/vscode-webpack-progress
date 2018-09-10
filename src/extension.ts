@@ -8,7 +8,7 @@ export function activate(context: vscode.ExtensionContext) {
   const progress = new WebpackProgress();
   const watcher = new ProgressWatcher();
   
-  watcher.initializeWacher();
+  watcher.initializeWatcher();
   watcher.on('progressChange', state => progress.updateProgress(state));
   
   context.subscriptions.push(progress);
